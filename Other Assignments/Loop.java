@@ -2,66 +2,84 @@ import java.util.Scanner;
 
 public class Loop {
     public static void main(String[] args) {
-        // Example of if-else statement
+        // Demonstrating if-else statement
         int value = 10;
 
-        if (value > 0) System.out.println("The number is positive.");
-        else if (value < 0) System.out.println("The number is negative.");
-        else    System.out.println("The number is zero.");
+        if (value > 0)
+            System.out.println("The number is positive.");
+        else if (value < 0)
+            System.out.println("The number is negative.");
+        else
+            System.out.println("The number is zero.");
 
         System.out.println();
 
-        // Example of while loop
-        int num = 1;
-        System.out.println("Counting from 1 to 5 using a while loop:");
-        while (num <= 5) {
+        // Demonstrating while loop with a different range
+        int num = 5;
+        System.out.println("Counting from 5 to 10 using a while loop:");
+        while (num <= 10) {
             System.out.println(num);
             num++;
         }
 
         System.out.println();
 
-        // Example of for loop
-        System.out.println("Counting from 1 - 5 using for loop:");
-        for (int i = 1; i <= 5; i++) {
+        // Demonstrating for loop with a different range
+        System.out.println("Counting from 5 - 10 using for loop:");
+        for (int i = 5; i <= 10; i++) {
             System.out.println(i);
         }
 
         System.out.println();
 
-        // Example of switch statement
+        // Customizing use case statements
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter a day number (1-7): ");
-        int daynum = scanner.nextInt();
+        System.out.println("Enter a number representing a month (1-12): ");
+        int monthNum = scanner.nextInt();
 
-        String day;
-        switch (daynum) {
+        String month;
+        switch (monthNum) {
             case 1:
-                day = "Sunday: No work day";
+                month = "January: Winter";
                 break;
             case 2:
-                day = "Monday: Work Day";
+                month = "February: Winter";
                 break;
             case 3:
-                day = "Tuesday: Work Day";
+                month = "March: Spring";
                 break;
             case 4:
-                day = "Wednesday: Work Day";
+                month = "April: Spring";
                 break;
             case 5:
-                day = "Thursday: Work Day";
+                month = "May: Spring";
                 break;
             case 6:
-                day = "Friday: Work Day";
+                month = "June: Summer";
                 break;
             case 7:
-                day = "Saturday: No work day";
+                month = "July: Summer";
+                break;
+            case 8:
+                month = "August: Summer";
+                break;
+            case 9:
+                month = "September: Fall";
+                break;
+            case 10:
+                month = "October: Fall";
+                break;
+            case 11:
+                month = "November: Fall";
+                break;
+            case 12:
+                month = "December: Winter";
                 break;
             default:
-                day = "Invalid day number";
+                month = "Invalid month number";
         }
 
-        System.out.println("Day: " + day);
+        System.out.println("Month: " + month);
 
         scanner.close();
     }
