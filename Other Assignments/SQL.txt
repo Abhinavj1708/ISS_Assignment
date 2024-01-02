@@ -1,0 +1,188 @@
+CREATE TABLE IF NOT EXISTS practiceSQL (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    age INT,
+    email VARCHAR(255) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- Insert sample records into practiceSQL
+INSERT INTO practiceSQL (name, age, email) VALUES ('John Doe', 25, 'john.doe@example.com');
+INSERT INTO practiceSQL (name, age, email) VALUES ('Jane Smith', 30, 'jane.smith@example.com');
+INSERT INTO practiceSQL (name, age, email) VALUES ('Bob Johnson', 28, 'bob.johnson@example.com');
+INSERT INTO practiceSQL (name, age, email) VALUES ('Charlie Brown', 22, 'charlie.brown@example.com');
+INSERT INTO practiceSQL (name, age, email) VALUES ('David Lee', 32, 'david.lee@example.com');
+
+
+-- Select
+SELECT id, name, age, email FROM practiceSQL;
+
+
+-- Distinct
+SELECT DISTINCT age FROM practiceSQL;
+
+
+-- Where, And, Or
+SELECT id, name, age, email FROM practiceSQL WHERE age > 25 AND name LIKE 'John%';
+
+
+-- Order By
+SELECT id, name, age, email FROM practiceSQL ORDER BY age DESC, name ASC;
+
+
+-- Insert Into
+INSERT INTO practiceSQL (name, age, email) VALUES ('Alice Johnson', 30, 'alice@example.com');
+
+
+-- Update
+UPDATE practiceSQL SET age = 26 WHERE name = 'John Doe';
+
+
+-- Delete
+DELETE FROM practiceSQL WHERE name = 'John Doe';
+
+
+-- Select Top 5 records
+SELECT id, name FROM practiceSQL LIMIT 5;
+
+
+-- Like, Wildcards
+SELECT name FROM practiceSQL WHERE name LIKE 'A%';
+
+
+-- In
+SELECT name FROM practiceSQL WHERE age IN (25, 30);
+
+
+-- Between
+SELECT name FROM practiceSQL WHERE age BETWEEN 25 AND 30;
+
+
+-- Aliases
+SELECT id AS student_id, name AS student_name FROM practiceSQL;
+
+
+
+________________________________________________________________________________________________
+CREATE TABLE IF NOT EXISTS practiceSQL2 (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    age INT,
+    email VARCHAR(255) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- Insert sample records into practiceSQL2
+INSERT INTO practiceSQL2 (name, age, email) VALUES
+('Alice Doe', 28, 'alice.doe@example.com'),
+('Eve Smith', 35, 'eve.smith@example.com'),
+('Charlie Brown', 22, 'charlie2.brown@example.com'),
+('Bob Johnson', 30, 'bob2.johnson@example.com'),
+('Frank Lee', 28, 'frank.lee@example.com');
+
+
+-- Inner Join
+SELECT practiceSQL.id, practiceSQL.name AS name1, practiceSQL2.name AS name2
+FROM practiceSQL
+INNER JOIN practiceSQL2 ON practiceSQL.id = practiceSQL2.id;
+
+
+-- Left Join
+SELECT practiceSQL.id, practiceSQL.name AS name1, practiceSQL2.name AS name2
+FROM practiceSQL
+LEFT JOIN practiceSQL2 ON practiceSQL.id = practiceSQL2.id;
+
+
+-- Right Join
+SELECT practiceSQL.id, practiceSQL.name AS name1, practiceSQL2.name AS name2
+FROM practiceSQL
+RIGHT JOIN practiceSQL2 ON practiceSQL.id = practiceSQL2.id;
+
+
+-- Full Join (MySQL does not directly support FULL JOIN, emulate using UNION)
+SELECT practiceSQL.id, practiceSQL.name AS name1, practiceSQL2.name AS name2
+FROM practiceSQL
+LEFT JOIN practiceSQL2 ON practiceSQL.id = practiceSQL2.id
+UNION
+SELECT practiceSQL.id, practiceSQL.name AS name1, practiceSQL2.name AS name2
+FROM practiceSQL
+RIGHT JOIN practiceSQL2 ON practiceSQL.id = practiceSQL2.id;
+
+
+___________________________________________________________________________________________
+
+
+-- Alter Table (Add a new column to practiceSQL)
+ALTER TABLE practiceSQL ADD COLUMN new_column VARCHAR(255);
+
+
+-- Auto Increment
+CREATE TABLE IF NOT EXISTS new_table_auto_increment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    column1 VARCHAR(255)
+);
+
+
+-- Views
+CREATE VIEW combined_view AS
+SELECT id, name, age, email FROM practiceSQL
+UNION
+SELECT id, name, age, email FROM practiceSQL2;
+
+
+-- Null Values
+SELECT id, name FROM practiceSQL WHERE new_column IS NULL;
+
+
+-- Group By, Having Functions
+SELECT age, COUNT(*) FROM practiceSQL GROUP BY age HAVING COUNT(*) > 1;
+
+
+-- Null Functions
+SELECT name, COALESCE(age, 0) FROM practiceSQL;
+
+_________________________________________________________________________________
+
+-- Stored Procedure
+DELIMITER //
+CREATE PROCEDURE sp_example(IN param1 INT, OUT result1 INT)
+BEGIN
+    SELECT age INTO result1 FROM practiceSQL WHERE id = param1;
+END //
+DELIMITER ;
+
+-- Callable Statement
+CALL sp_example(1, @result);
+
+-- Prepared Statement
+PREPARE stmt FROM 'SELECT id, name FROM practiceSQL WHERE age > ?';
+SET @param_value = 25;
+EXECUTE stmt USING @param_value;
+DEALLOCATE PREPARE stmt;
+
+_________________________________________________________________________________
+-- Create students table
+CREATE TABLE students (
+    student_id INT PRIMARY KEY,
+    student_name VARCHAR(255) NOT NULL,
+    age INT,
+    email VARCHAR(255) UNIQUE
+);
+
+-- Create courses table
+CREATE TABLE courses (
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(255) NOT NULL,
+    instructor_name VARCHAR(255) NOT NULL
+);
+
+-- Create a junction table for the many-to-many relationship
+CREATE TABLE student_courses (
+    student_id INT,
+    course_id INT,
+    PRIMARY KEY (student_id, course_id),
+    FOREIGN KEY (student_id) REFERENCES students(student_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
